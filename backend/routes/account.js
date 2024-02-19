@@ -1,3 +1,4 @@
+// backend/routes/account.js
 const express = require('express');
 const { authMiddleware } = require('../middleware');
 const { Account } = require('../db');
@@ -19,7 +20,7 @@ router.post("/transfer", authMiddleware, async (req, res) => {
     const session = await mongoose.startSession();
 
     session.startTransaction();
-    const { amount, to } = req.body;
+    const { to , amount} = req.body;
 
     // Fetch the accounts within the transaction
     const account = await Account.findOne({ userId: req.userId }).session(session);
