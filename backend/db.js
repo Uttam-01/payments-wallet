@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 
 
-mongoose.connect(URI);
+mongoose.connect(MONGO_URI);
 
 // Create a Schema for Users
 const userSchema = new mongoose.Schema({
