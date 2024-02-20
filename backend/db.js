@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 
-mongoose.connect(process.env.URI);
+mongoose.connect(URI);
 
 // Create a Schema for Users
 const userSchema = new mongoose.Schema({
