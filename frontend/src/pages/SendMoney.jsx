@@ -1,13 +1,16 @@
 import { useSearchParams } from 'react-router-dom';
 import axios from "axios";
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom"
+import {LoaderComp} from "../components/Loader";
 
 export const SendMoney = () => {
     const [searchParams] = useSearchParams();
+    const [isLoading, setIsLoading] = useState(false);
     const id = searchParams.get("id");
     const name = searchParams.get("name");
     const [amount, setAmount] = useState(0);
-
+    const navigate = useNavigate(); 
     return <div class="flex justify-center h-screen bg-gray-100">
         <div className="h-full flex flex-col justify-center">
             <div
@@ -42,6 +45,7 @@ export const SendMoney = () => {
                     />
                     </div>
                     <button onClick={async () => {
+                        setIsLoading(true);
                         await axios.post("https://paytm-backend-1kgc.onrender.com/api/v1/account/transfer", {
                             to: id,
                             amount: amount,
@@ -50,8 +54,17 @@ export const SendMoney = () => {
                                 Authorization: "Bearer " + localStorage.getItem("token")
                             }
                         })
-                    }} className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white">
-                        Initiate Transfer
+                        alert("Payment Done")
+                        navigate("/dashboard");
+
+                    }} className="flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white">
+                        {
+                            isLoading ? (
+                                <LoaderComp />
+                            ) : (
+                                <>Initiate Transfer</>
+                            )
+                        }
                     </button>
                 </div>
                 </div>

@@ -6,12 +6,14 @@ import { InputBox } from "../components/InputBox"
 import { SubHeading } from "../components/SubHeading"
 import axios from "axios";
 import { useNavigate } from "react-router-dom"
+import {LoaderComp} from "../components/Loader";
 
 export const Signup = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     return <div className="bg-slate-300 h-screen flex justify-center">
@@ -33,6 +35,7 @@ export const Signup = () => {
         }} placeholder="123456" label={"Password"} />
         <div className="pt-4">
           <Button onClick={async () => {
+            setIsLoading(true);
             const response = await axios.post("https://paytm-backend-1kgc.onrender.com/api/v1/user/signup", {
               username,
               firstName,
@@ -41,8 +44,12 @@ export const Signup = () => {
             });
             localStorage.setItem("token", response.data.token)
             navigate("/dashboard")
-          }} label={"Sign up"} />
-        </div>
+          }} label={isLoading ? (
+                      <LoaderComp />
+                  ) : (
+                      <>Signup</>
+                  )} />
+          </div>
         <BottomWarning label={"Already have an account?"} buttonText={"Sign in"} to={"/signin"} />
       </div>
     </div>

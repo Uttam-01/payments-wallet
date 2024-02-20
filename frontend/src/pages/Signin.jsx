@@ -6,10 +6,12 @@ import { SubHeading } from "../components/SubHeading"
 import { useState } from "react"
 import axios from "axios";
 import { useNavigate } from "react-router-dom"
+import {LoaderComp} from "../components/Loader";
 
 export const Signin = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     return <div className="bg-slate-300 h-screen flex justify-center">
@@ -24,7 +26,13 @@ export const Signin = () => {
           setPassword(e.target.value)
         }} placeholder="123456" label={"Password"} />
         <div className="pt-4">
-          <Button label={ "Sign in"} onClick = {async () => {
+          <Button  label={isLoading ? (
+                        <LoaderComp />
+                        ) : (
+                            <>Signin</>
+                        )} 
+            onClick = {async () => {
+              setIsLoading(true);
             const response = await axios.post("https://paytm-backend-1kgc.onrender.com/api/v1/user/signin", {
               username,
               password
